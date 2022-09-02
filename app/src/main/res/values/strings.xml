@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">BookAndroid</string>
+    <string name="sign_in_info_hint">Email , Username , Phone Number</string>
+    <string name="password_hint">password</string>
+    <string name="sgin_up_info_hint">Email , Phone Number</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="username_regex">[0-9] + [a-z] + [A-Z] + _ + @</string>
+    <string name="phone_number_regex">[0-9]+</string>
+
+
 </resources>

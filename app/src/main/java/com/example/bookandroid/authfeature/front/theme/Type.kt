@@ -1,4 +1,4 @@
-package com.example.bookandroid.ui.theme
+package com.example.bookandroid.authfeature.front.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
@@ -12,7 +12,14 @@ val Typography = Typography(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
-    )
+    ),
+    body2 = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    ),
+
+
     /* Other default text styles to override
     button = TextStyle(
         fontFamily = FontFamily.Default,

@@ -1,4 +1,4 @@
-package com.example.bookandroid.ui.theme
+package com.example.bookandroid.authfeature.front.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
@@ -7,15 +7,33 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = HippieBlue,
+    primaryVariant = BilzzardBlue,
+    secondary = Carnation,
+    secondaryVariant = PeachSchnapps,
+    onSecondary = HippiePink,
+    //text
+    onPrimary = White900,
+    error = Shiraz,
+    onError = PigPink,
+    onBackground = TransparentBlack300,
+    onSurface = TransparentBlack500,
+
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = BilzzardBlue,
+    primaryVariant = FountainBlue,
+    secondary = Pippin,
+    secondaryVariant = WildWatermelon,
+    onSecondary = YourPink,
+    //text
+    onPrimary = Black900,
+    error = Cranberry,
+    onError = NightShadz,
+    onBackground = TransparentWhite300,
+    onSurface = TransparentWhite500,
+
 
     /* Other default colors to override
     background = Color.White,
