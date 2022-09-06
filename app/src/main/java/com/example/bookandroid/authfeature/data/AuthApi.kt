@@ -21,6 +21,12 @@ interface AuthApi {
     @POST("")
     suspend fun signUpWithPhoneNumber(@Path(value = "phoneNumber") phoneNumber: String , @Path(value = "password") password : String) : Any?
 
+    @POST("")
+    fun forgetPasswordEmail(@Path(value = "email") email: String): Any?
+
+    @POST("")
+    fun forgetPasswordPhoneNumber(@Path(value = "phoneNumber") phoneNumber: String): Any?
+
 
 
 

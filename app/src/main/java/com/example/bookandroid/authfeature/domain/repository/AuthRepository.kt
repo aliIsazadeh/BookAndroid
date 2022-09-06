@@ -15,4 +15,8 @@ interface AuthRepository {
 
     suspend fun signUpEmail(user : SignUser): Any?
 
+    suspend fun forgetPasswordEmail(email : String) : Any?
+
+    suspend fun forgetPasswordPhoneNumber(phoneNumber : String) : Any?
+
 }

@@ -1,5 +1,7 @@
 package com.example.bookandroid.authfeature.domain.usecase
 
+import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.ForgetPasswordEmail
+import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.ForgetPasswordPhoneNumber
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInEmail
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInPhoneNumber
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInUsername
@@ -15,5 +17,7 @@ data class AuthUseCases @Inject constructor(
     val signInPhoneNumber: SignInPhoneNumber,
     val signUpEmail: SignUpEmail,
     val signUpPhoneNumber: SignUpPhoneNumber,
+    val forgetPasswordEmail: ForgetPasswordEmail,
+    val forgetPasswordPhoneNumber: ForgetPasswordPhoneNumber
 
 )

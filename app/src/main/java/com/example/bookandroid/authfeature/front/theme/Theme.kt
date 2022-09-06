@@ -11,7 +11,7 @@ private val DarkColorPalette = darkColors(
     primaryVariant = BilzzardBlue,
     secondary = Carnation,
     secondaryVariant = PeachSchnapps,
-    onSecondary = HippiePink,
+    onSecondary = Black900,
     //text
     onPrimary = White900,
     error = Shiraz,
@@ -26,7 +26,7 @@ private val LightColorPalette = lightColors(
     primaryVariant = FountainBlue,
     secondary = Pippin,
     secondaryVariant = WildWatermelon,
-    onSecondary = YourPink,
+    onSecondary = White900,
     //text
     onPrimary = Black900,
     error = Cranberry,

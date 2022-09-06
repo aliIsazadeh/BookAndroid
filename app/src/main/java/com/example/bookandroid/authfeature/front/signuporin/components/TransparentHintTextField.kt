@@ -1,11 +1,6 @@
-@file:OptIn(ExperimentalMaterialApi::class)
-
 package com.example.bookandroid.authfeature.front.signuporin.components
 
-import android.graphics.drawable.Icon
-import android.widget.EditText
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,29 +9,26 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Login
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bookandroid.authfeature.front.theme.BookAndroidTheme
-import com.example.bookandroid.authfeature.front.theme.TransparentWhite300
-import com.example.bookandroid.authfeature.front.theme.TransparentWhite500
 
 
 @Composable
 fun TransparentHintTextField(
     text: String,
     hint: String,
-    modifier: Modifier = Modifier,
     isHintVisible: Boolean = true,
-    onValueChange: (String) -> Unit,
     textStyle: TextStyle = TextStyle(),
+    onValueChange: (String) -> Unit,
     singleLine: Boolean = false,
     onFocusChange: (FocusState) -> Unit,
     icon: ImageVector
@@ -54,30 +46,30 @@ fun TransparentHintTextField(
                 )
             )
 
-            Icon(imageVector = icon, contentDescription = null, tint = MaterialTheme.colors.onSurface)
+            Icon(imageVector = icon, contentDescription = null, tint = MaterialTheme.colors.onSurface , modifier = Modifier.size(15.dp))
         }
 
         Spacer(Modifier.height(2.dp))
 
-        BasicTextField(
-            value = text,
-            onValueChange = onValueChange,
-            singleLine = singleLine,
-            textStyle = textStyle,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = MaterialTheme.colors.onBackground,
-                    shape = RoundedCornerShape(corner = CornerSize(5.dp))
-                )
-                .height(40.dp)
-                .onFocusChanged {
-                    onFocusChange(it)
-                }
-        )
-        {
-            Text(text = "", style = textStyle, color = MaterialTheme.colors.onPrimary)
+        Column(modifier = Modifier.height(40.dp).background(
+            color = MaterialTheme.colors.onBackground,
+            shape = RoundedCornerShape(corner = CornerSize(5.dp) ,)
+        ) , verticalArrangement = Arrangement.Center){
+            BasicTextField(
+                value = text,
+                enabled = true,
+                onValueChange = onValueChange,
+                singleLine = singleLine,
+                textStyle = MaterialTheme.typography.body1.copy
+                    (textAlign = TextAlign.Center, textDecoration = TextDecoration.None),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onFocusChanged {
+                        onFocusChange(it)
+                    }
+            )
         }
+
 
     }
 }
@@ -88,21 +80,17 @@ fun TransparentHintTextField(
 fun TextFildPreview() {
 
     BookAndroidTheme {
-        Box(
-            modifier = Modifier.size(600.dp).background(color = MaterialTheme.colors.primary),
-            contentAlignment = Alignment.Center
-        ) {
+
             TransparentHintTextField(
                 text = "",
-                textStyle = MaterialTheme.typography.body2,
                 hint = "Phone Number",
-                modifier = Modifier.padding(horizontal = 30.dp),
-                singleLine = true,
                 isHintVisible = true,
-                onFocusChange = {},
+                textStyle = MaterialTheme.typography.body2,
                 onValueChange = {},
+                singleLine = true,
+                onFocusChange = {},
                 icon = Icons.Default.Login
             )
-        }
+
     }
 }

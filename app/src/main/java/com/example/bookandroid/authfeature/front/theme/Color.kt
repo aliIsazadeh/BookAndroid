@@ -23,10 +23,10 @@ val Cranberry = Color(0xFFCF6679)
 val NightShadz = Color(0xFFB1384E)
 
 
-val TransparentWhite300 = Color(220,220,220,15)
+val TransparentWhite300 = Color(220,220,220,25)
 val TransparentWhite500 = Color(220,220,220,150)
 
-val TransparentBlack300 = Color(40,40,40,15)
+val TransparentBlack300 = Color(40,40,40,25)
 val TransparentBlack500 = Color(40,40,40,150)
 
 val Black900 = Color(40,40,40,250)

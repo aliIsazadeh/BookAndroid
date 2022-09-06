@@ -9,7 +9,7 @@ class AuthRepositoryImpl @Inject constructor(
     private val api: AuthApi
 ) : AuthRepository{
     override suspend fun signInEmail(user: SignUser): Any? {
-        return api.signInWithEmail(email = user.email.toString() , password = user.passwordAuthentication )
+        return api.signInWithEmail(email = user.email, password = user.passwordAuthentication )
     }
 
     override suspend fun signUpPhoneNumber(user: SignUser): Any? {
@@ -25,7 +25,15 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun signUpEmail(user: SignUser): Any? {
-        return api.signUpWithEmail(email = user.email.toString() , password = user.passwordAuthentication )
+        return api.signUpWithEmail(email = user.email, password = user.passwordAuthentication )
+    }
+
+    override suspend fun forgetPasswordEmail(email: String): Any? {
+        return api.forgetPasswordEmail(email = email)
+    }
+
+    override suspend fun forgetPasswordPhoneNumber(phoneNumber: String): Any? {
+        return api.forgetPasswordPhoneNumber(phoneNumber = phoneNumber)
     }
 
 

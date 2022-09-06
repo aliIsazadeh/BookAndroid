@@ -1,159 +1,325 @@
-package com.example.bookandroid.authfeature.front.signuporin
+package com.example.bookandroid.authfeature.front.signuporin.components
 
-import android.widget.EditText
-import androidx.compose.foundation.BorderStroke
+
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.GenericShape
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Surface
-import androidx.compose.material.TextField
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.*
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.ColorUtils
+import androidx.constraintlayout.compose.ConstraintLayout
+import com.example.bookandroid.R
+import com.example.bookandroid.authfeature.front.signuporin.AuthEvent
+import com.example.bookandroid.authfeature.front.signuporin.SignViewModel
 import com.example.bookandroid.authfeature.front.theme.BookAndroidTheme
 
+
 @Composable
-fun LoginItemShape(modifier: Modifier = Modifier, signUp: Boolean = true , colors : List<Color>) {
-    val cornerRadius: Dp = 10.dp
-    val cutCornerSize: Dp = 30.dp
+fun LoginItemShape(modifier: Modifier = Modifier, signUp: Boolean = true, colors: List<Color> , viewModel : SignViewModel) {
+
+
+
 
     Box(
         modifier = modifier
-            .size(height = 600.dp, width = 1000.dp)
+            .size(height = 530.dp, width = 1000.dp)
     ) {
-        Canvas(modifier = Modifier.matchParentSize()) {
 
-            val canvasSize = size
-            val canvasWidth = size.width
-            val canvasHeight = size.height
-            val cornerRadiusRect = CornerRadius(x = 80f, y = 80f)
-            val cornerRadiusSqu = CornerRadius(x = 20f, y = 20f)
+        Row(modifier = Modifier.fillMaxSize(), horizontalArrangement = Arrangement.End) {
 
+            Canvas(modifier = Modifier.fillMaxHeight().fillMaxWidth(fraction = 0.85f)) {
 
-            val rectPath = Path().apply {
+                val canvasSize: Size = size
+                CornerRadius(x = 80f, y = 80f)
 
 
-                addRoundRect(
-                    RoundRect(
-                        rect = Rect(
-                            offset = Offset(x = canvasWidth / 3F, y = canvasHeight / 300F),
-                            size = canvasSize / 1F,
-                        ),
-                        bottomLeft = cornerRadiusRect,
-                        topLeft = cornerRadiusRect
-                    )
-                )
-            }
-            var selectSize : Float
-
-            if (signUp){
-                selectSize = size.height/2.15f
-            }else{
-                selectSize = size.height/1.85f
-            }
+                val selectSize: Float = if (signUp) {
+                    size.height / 1.85f
+                } else {
+                    size.height / 2.15f
+                }
 
 
-            val roundThreePath = Path().apply {
+                val roundThreePath = Path().apply {
 //                lineTo(0f, size.height)
 //                lineTo(size.width, size.height /2f)
-                moveTo(size.width, 0f)
-                lineTo(size.width / 4f, selectSize)
-                lineTo(size.width, size.height)
-                moveTo(size.width, size.height)
-                lineTo(size.width / 4f, selectSize)
+                    moveTo(size.width, 0f)
+                    lineTo(size.width / 10f, selectSize)
+                    lineTo(size.width, size.height)
+                    moveTo(size.width, size.height)
+                    lineTo(size.width / 10f, selectSize)
 
 
-                close()
-            }
+                    close()
+                }
 
-            val threePath = Path().apply {
+                val threePath = Path().apply {
 //                lineTo(0f, size.height)
 //                lineTo(size.width, size.height /2f)
-                moveTo(size.width -50f, 0f)
-                lineTo(size.width / 3.8f, selectSize)
-                lineTo(size.width, size.height)
-                moveTo(size.width -50f, size.height)
-                lineTo(size.width / 3.5f, selectSize)
+                    moveTo(size.width - 25f, 0f)
+                    lineTo(size.width / 9f, selectSize)
+                    lineTo(size.width - 25f, size.height)
+                    moveTo(size.width - 25f, size.height)
+                    lineTo(size.width / 9f, selectSize)
 
 
-                close()
-            }
+                    close()
+                }
 
 //            drawOutline()
 
-            drawIntoCanvas { canvas ->
+                drawIntoCanvas { canvas ->
 
 
-                canvas.drawOutline(
-                    outline = Outline.Generic(path = roundThreePath),
-                    paint = Paint().apply {
-                        color = colors.get(1)
-                        pathEffect = PathEffect.cornerPathEffect(30f)
+                    canvas.drawOutline(
+                        outline = Outline.Generic(path = roundThreePath),
+                        paint = Paint().apply {
+                            color = colors[1]
+                            pathEffect = PathEffect.cornerPathEffect(30f)
 
-                    },
+                        },
 
-                    )
+                        )
 
-                drawOutline(
-                    outline = Outline.Generic(path = threePath),
-                    brush = Brush.linearGradient
-                        (
-                        colors = colors,
-                        start = Offset(x=size.width - size.width/9f,size.height/9f),
-                        end = Offset(x=size.width/5f,size.height/3f)
-                    ),
+                    drawOutline(
+                        outline = Outline.Generic(path = threePath),
+                        brush = Brush.linearGradient
+                            (
+                            colors = colors,
+                            start = Offset(x = size.width - size.width / 18f, size.height / 9f),
+                            end = Offset(x = size.width / 11f, size.height / 4f)
+                        ),
 
-                )
+                        )
+                }
+
             }
 
-            drawPath(
-                rectPath,
-                brush = Brush.linearGradient
-                    (
-                    colors = colors,
-                    start = Offset(x=size.width - size.width/9f,size.height/9f),
-                    end = Offset(x=size.width/5f,size.height/3f)
-                ),
-            )
-
         }
 
+        Row(modifier = modifier.fillMaxSize(), horizontalArrangement = Arrangement.End) {
 
-        Column(modifier = Modifier) {
 
-//            OutlinedTextField(value = , onValueChange = )
+            ConstraintLayout() {
+
+                val (canvas, column, title , submit) = createRefs()
+
+
+                Canvas(
+                    modifier = Modifier.fillMaxHeight().fillMaxWidth(fraction = 0.67f)
+                        .constrainAs(canvas) {
+                            end.linkTo(parent.end)
+                        }) {
+
+                    val canvasSize = size
+                    val canvasWidth = size.width
+                    val canvasHeight = size.height
+                    val cornerRadiusRect = CornerRadius(x = 80f, y = 80f)
+
+
+                    val rectPath = Path().apply {
+
+
+                        addRoundRect(
+                            RoundRect(
+                                rect = Rect(
+                                    offset = Offset(
+                                        x = canvasWidth / 300F,
+                                        y = canvasHeight / 300F
+                                    ),
+                                    size = canvasSize / 1F,
+                                ),
+                                bottomLeft = cornerRadiusRect,
+                                topLeft = cornerRadiusRect
+                            )
+                        )
+                    }
+
+
+                    drawPath(
+                        rectPath,
+                        brush = Brush.linearGradient
+                            (
+                            colors = colors,
+                            start = Offset(x = size.width - size.width / 18f, size.height / 9f),
+                            end = Offset(x = size.width / 11f, size.height / 4f)
+                        ),
+                    )
+
+                }
+
+                Text(
+                    modifier = Modifier.constrainAs(title) {
+                        start.linkTo(canvas.start, margin = 20.dp)
+                        top.linkTo(canvas.top, margin = 40.dp)
+                    },
+                    text = if (signUp) stringResource(R.string.signup)
+                    else stringResource(R.string.signin), style = MaterialTheme.typography.h4,
+                    color = MaterialTheme.colors.onSecondary
+                )
+
+
+                if (signUp) {
+                    Column(
+                        modifier = Modifier.fillMaxHeight().fillMaxWidth(fraction = 0.71f)
+                            .constrainAs(column) {
+                                start.linkTo(canvas.start)
+                                end.linkTo(canvas.end)
+                                top.linkTo(canvas.top, margin = 150.dp)
+                            }) {
+                        viewModel.signUpUsername.value.apply{
+                            TransparentHintTextField(
+                                text = text,
+                                hint = hint + "*",
+                                isHintVisible = true,
+                                textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
+                                onValueChange = {viewModel.onEvent(AuthEvent.EnteredUsernameSignUp(it))},
+                                singleLine = true,
+                                onFocusChange = {viewModel.onEvent(AuthEvent.ChangeFocusUsernameSignUp(it))},
+                                icon = icon
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(15.dp))
+
+
+                        viewModel.signUpInfo.value.apply{
+                            TransparentHintTextField(
+                                text = text,
+                                hint = hint + "*",
+                                isHintVisible = true,
+                                textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
+                                onValueChange = {viewModel.onEvent(AuthEvent.EnteredValueSignUp(it))},
+                                singleLine = true,
+                                onFocusChange = {viewModel.onEvent(AuthEvent.ChangeFocusValueSignUp(it))},
+                                icon = icon
+                            )
+                        }
+
+
+                        Spacer(modifier = Modifier.height(15.dp))
+
+
+                        viewModel.passwordSignUp.value.apply{
+                            TransparentHintTextField(
+                                text = text,
+                                hint = hint + "*",
+                                isHintVisible = true,
+                                textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
+                                onValueChange = {viewModel.onEvent(AuthEvent.EnteredPasswordSignUp(it))},
+                                singleLine = true,
+                                onFocusChange = {viewModel.onEvent(AuthEvent.ChangeFocusPasswordSignUp(it))},
+                                icon = icon
+                            )
+                        }
+
+
+                        Spacer(modifier = Modifier.height(15.dp))
+
+
+                        viewModel.passwordConfirm.value.apply{
+                            TransparentHintTextField(
+                                text = text,
+                                hint = hint + "*",
+                                isHintVisible = true,
+                                textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
+                                onValueChange = {viewModel.onEvent(AuthEvent.EnteredPasswordConfirmSignUp(it))},
+                                singleLine = true,
+                                onFocusChange = {viewModel.onEvent(AuthEvent.ChangeFocusPasswordConfirmSignUp(it))},
+                                icon = icon
+                            )
+                        }
+
+                    }
+                } else {
+                    Column(
+                        modifier = Modifier.fillMaxHeight().fillMaxWidth(fraction = 0.71f)
+                            .constrainAs(column) {
+                                start.linkTo(canvas.start)
+                                end.linkTo(canvas.end)
+                                top.linkTo(canvas.top, margin = 170.dp)
+                            }) {
+
+                        viewModel.signInInfo.value.apply{
+                            TransparentHintTextField(
+                                text = text,
+                                hint = hint + "*",
+                                isHintVisible = true,
+                                textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
+                                onValueChange = {viewModel.onEvent(AuthEvent.EnteredValueSignIn(it))},
+                                singleLine = true,
+                                onFocusChange = {viewModel.onEvent(AuthEvent.ChangeFocusValueSignIn(it))},
+                                icon = icon
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(35.dp))
+
+
+                        viewModel.passwordSignIn.value.apply{
+                            TransparentHintTextField(
+                                text = text,
+                                hint = hint + "*",
+                                isHintVisible = true,
+                                textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
+                                onValueChange = {viewModel.onEvent(AuthEvent.EnteredPasswordSignIn(it))},
+                                singleLine = true,
+                                onFocusChange = {viewModel.onEvent(AuthEvent.ChangeFocusPasswordSignIn(it))},
+                                icon = icon
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(25.dp))
+
+                        TextButton(onClick = {viewModel.onEvent(AuthEvent.ForgetPassword)} , modifier = Modifier.padding(horizontal = 30.dp)) {
+                            Text(
+                                stringResource(R.string.forget_password),
+                                style = TextStyle(fontWeight = FontWeight.Bold),
+                                color = MaterialTheme.colors.onSecondary
+                            )
+                        }
+
+
+                    }
+                }
+                SignSubmitButton(modifier = Modifier.width(width =180.dp).constrainAs(submit){
+                    top.linkTo(canvas.bottom , margin = -10.dp)
+                    start.linkTo(column.start , margin = 0.dp)
+                    end.linkTo(column.end , margin = 0.dp)
+                },onClick = {
+                    if (viewModel.isSignIn.value.isSelected) {
+                        viewModel.onEvent(AuthEvent.SignIn)
+                    } else viewModel.onEvent(AuthEvent.SignUp)
+                },
+                    text = if(viewModel.isSignUp.value.isSelected) stringResource(R.string.signup)
+                    else stringResource(R.string.signin))
+            }
+
 
         }
-
-
     }
-
 }
-
 
 
 @Preview
 @Composable
 fun LoginItemShapePreview() {
-    val size: Size = Size(width = 1000f, height = 1000f)
 
-    BookAndroidTheme(){
-        LoginItemShape(
-            colors = listOf(
-                MaterialTheme.colors.primaryVariant,
-                MaterialTheme.colors.secondaryVariant
-            )
-        )
+    BookAndroidTheme {
+//        LoginItemShape(
+//            colors = listOf(
+//                MaterialTheme.colors.primaryVariant,
+//                MaterialTheme.colors.secondaryVariant
+//            ), signUp = false
+//        )
     }
 }

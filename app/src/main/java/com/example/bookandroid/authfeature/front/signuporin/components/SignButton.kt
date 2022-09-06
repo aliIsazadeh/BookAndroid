@@ -40,35 +40,35 @@ fun SignButton(
 ) {
 
     if (isSelected) {
-        Button(
-            onClick = onClick, colors = ButtonDefaults.buttonColors(
-                backgroundColor =
-                MaterialTheme.colors.primary
-            ),
-            shape = RoundedCornerShape(40.dp),
-            modifier = Modifier
-                .coloredShadow(
-                    color = Color.BLACK, offsetX = 0.dp, offsetY = 15.dp,
-                    blurRadius = 15.dp, spread = 1f, borderRadius = 30.dp
-                )
-                .border(
-                    width = 0.dp,
-                    shape = RectangleShape,
-                    color = androidx.compose.ui.graphics.Color.Transparent
-                )
-        ) {
-            Text(text =  text )
+        Box(modifier = modifier
+            .border(
+                width = 0.dp,
+                shape = RectangleShape,
+                color = Transparent
+            )){
+            Button(
+                onClick = onClick, colors = ButtonDefaults.buttonColors(
+                    backgroundColor =
+                    MaterialTheme.colors.primaryVariant
+                ),
+                shape = RoundedCornerShape(40.dp),
 
+            ) {
+                Text(text = text , color = MaterialTheme.colors.onSecondary)
+
+            }
         }
     } else {
-        TextButton(
-            onClick = onClick,
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Transparent,
-            ),
-            shape = RoundedCornerShape(40.dp),
-        ) {
-            Text(text = text)
+        Box(modifier = modifier){
+            TextButton(
+                onClick = onClick,
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Transparent,
+                ),
+                shape = RoundedCornerShape(40.dp),
+            ) {
+                Text(text = text, color = MaterialTheme.colors.onSecondary)
+            }
         }
     }
 
@@ -106,7 +106,6 @@ fun SignUpButtonPreview() {
 
 
 fun Modifier.coloredShadow(
-    color: Int = Color.BLACK,
     borderRadius: Dp = 0.dp,
     blurRadius: Dp = 0.dp,
     offsetY: Dp = 0.dp,
