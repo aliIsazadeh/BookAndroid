@@ -1,5 +1,6 @@
 package com.example.bookandroid.authfeature.data.repository
 
+import android.text.BoringLayout
 import com.example.bookandroid.authfeature.data.AuthApi
 import com.example.bookandroid.authfeature.domain.model.SignUser
 import com.example.bookandroid.authfeature.domain.repository.AuthRepository
@@ -34,6 +35,11 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun forgetPasswordPhoneNumber(phoneNumber: String): Any? {
         return api.forgetPasswordPhoneNumber(phoneNumber = phoneNumber)
+    }
+
+    override suspend fun isUsernameAvailable(username: String) : Boolean? {
+        return api.isUsernameAvailable(userName = username)
+
     }
 
 

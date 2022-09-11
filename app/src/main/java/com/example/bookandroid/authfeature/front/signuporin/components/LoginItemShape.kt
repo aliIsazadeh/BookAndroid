@@ -2,43 +2,65 @@ package com.example.bookandroid.authfeature.front.signuporin.components
 
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.*
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.runtime.*
 import com.example.bookandroid.R
 import com.example.bookandroid.authfeature.front.signuporin.AuthEvent
 import com.example.bookandroid.authfeature.front.signuporin.SignViewModel
-import com.example.bookandroid.authfeature.front.theme.BookAndroidTheme
+import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun LoginItemShape(modifier: Modifier = Modifier, signUp: Boolean = true, colors: List<Color> , viewModel : SignViewModel) {
+fun LoginItemShape(
+    modifier: Modifier = Modifier,
+    signUp: Boolean = true,
+    colors: List<Color>,
+    viewModel: SignViewModel
+) {
 
+    val coroutineScope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
+    val bringIntoViewRequester = BringIntoViewRequester()
+
+    val isKeyboardOpen by keyboardState()
+
+    if (isKeyboardOpen.equals(com.example.bookandroid.authfeature.front.signuporin.components.Keyboard.Closed)) {
+        viewModel.isKeyBoardOpen = remember { mutableStateOf(false) }
+    } else {
+        viewModel.isKeyBoardOpen = remember { mutableStateOf(true) }
+    }
 
 
 
     Box(
         modifier = modifier
-            .size(height = 530.dp, width = 1000.dp)
+            .size(height = if (viewModel.isKeyBoardOpen.value) 400.dp else 500.dp, width = 850.dp)
     ) {
 
         Row(modifier = Modifier.fillMaxSize(), horizontalArrangement = Arrangement.End) {
 
             Canvas(modifier = Modifier.fillMaxHeight().fillMaxWidth(fraction = 0.85f)) {
 
-                val canvasSize: Size = size
                 CornerRadius(x = 80f, y = 80f)
 
 
@@ -111,7 +133,7 @@ fun LoginItemShape(modifier: Modifier = Modifier, signUp: Boolean = true, colors
 
             ConstraintLayout() {
 
-                val (canvas, column, title , submit) = createRefs()
+                val (canvas, column, title, submit) = createRefs()
 
 
                 Canvas(
@@ -163,45 +185,88 @@ fun LoginItemShape(modifier: Modifier = Modifier, signUp: Boolean = true, colors
                         top.linkTo(canvas.top, margin = 40.dp)
                     },
                     text = if (signUp) stringResource(R.string.signup)
-                    else stringResource(R.string.signin), style = MaterialTheme.typography.h4,
+                    else stringResource(R.string.signin),
+                    style = if (viewModel.isKeyBoardOpen.value) MaterialTheme.typography.body1 else MaterialTheme.typography.h4,
                     color = MaterialTheme.colors.onSecondary
                 )
 
 
                 if (signUp) {
                     Column(
-                        modifier = Modifier.fillMaxHeight().fillMaxWidth(fraction = 0.71f)
+                        modifier = Modifier.verticalScroll(rememberScrollState()).fillMaxHeight()
+                            .fillMaxWidth(fraction = 0.71f)
                             .constrainAs(column) {
                                 start.linkTo(canvas.start)
                                 end.linkTo(canvas.end)
-                                top.linkTo(canvas.top, margin = 150.dp)
+                                top.linkTo(
+                                    title.bottom,
+                                    margin = if (viewModel.isKeyBoardOpen.value) 30.dp else 60.dp
+                                )
                             }) {
-                        viewModel.signUpUsername.value.apply{
+                        viewModel.signUpUsername.value.apply {
                             TransparentHintTextField(
                                 text = text,
                                 hint = hint + "*",
                                 isHintVisible = true,
                                 textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
-                                onValueChange = {viewModel.onEvent(AuthEvent.EnteredUsernameSignUp(it))},
+                                onValueChange = {
+                                    viewModel.onEvent(
+                                        AuthEvent.EnteredUsernameSignUp(
+                                            it
+                                        )
+                                    )
+                                },
                                 singleLine = true,
-                                onFocusChange = {viewModel.onEvent(AuthEvent.ChangeFocusUsernameSignUp(it))},
-                                icon = icon
+                                onFocusChange = {
+                                    if (it.isFocused) {
+                                        coroutineScope.launch {
+                                            bringIntoViewRequester.bringIntoView()
+                                            viewModel.isKeyBoardOpen = mutableStateOf(value = true)
+                                        }
+
+                                    } else {
+                                        viewModel.isKeyBoardOpen = mutableStateOf(value = false)
+                                    }
+                                    viewModel.onEvent(
+                                        AuthEvent.ChangeFocusUsernameSignUp(
+                                            it
+                                        )
+                                    )
+                                },
+                                icon = icon,
+                                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
                             )
                         }
 
                         Spacer(modifier = Modifier.height(15.dp))
 
 
-                        viewModel.signUpInfo.value.apply{
+                        viewModel!!.signUpInfo.value.apply {
                             TransparentHintTextField(
                                 text = text,
                                 hint = hint + "*",
                                 isHintVisible = true,
                                 textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
-                                onValueChange = {viewModel.onEvent(AuthEvent.EnteredValueSignUp(it))},
+                                onValueChange = { viewModel.onEvent(AuthEvent.EnteredValueSignUp(it)) },
                                 singleLine = true,
-                                onFocusChange = {viewModel.onEvent(AuthEvent.ChangeFocusValueSignUp(it))},
-                                icon = icon
+                                onFocusChange = {
+                                    if (it.isFocused) {
+                                        coroutineScope.launch {
+                                            bringIntoViewRequester.bringIntoView()
+                                            viewModel.isKeyBoardOpen = mutableStateOf(value = true)
+                                        }
+
+                                    } else {
+                                        viewModel.isKeyBoardOpen = mutableStateOf(value = false)
+                                    }
+                                    viewModel.onEvent(
+                                        AuthEvent.ChangeFocusValueSignUp(
+                                            it
+                                        )
+                                    )
+                                },
+                                icon = icon,
+                                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
                             )
                         }
 
@@ -209,16 +274,38 @@ fun LoginItemShape(modifier: Modifier = Modifier, signUp: Boolean = true, colors
                         Spacer(modifier = Modifier.height(15.dp))
 
 
-                        viewModel.passwordSignUp.value.apply{
+                        viewModel.passwordSignUp.value.apply {
                             TransparentHintTextField(
                                 text = text,
                                 hint = hint + "*",
                                 isHintVisible = true,
                                 textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
-                                onValueChange = {viewModel.onEvent(AuthEvent.EnteredPasswordSignUp(it))},
+                                onValueChange = {
+                                    viewModel.onEvent(
+                                        AuthEvent.EnteredPasswordSignUp(
+                                            it
+                                        )
+                                    )
+                                },
                                 singleLine = true,
-                                onFocusChange = {viewModel.onEvent(AuthEvent.ChangeFocusPasswordSignUp(it))},
-                                icon = icon
+                                onFocusChange = {
+                                    if (it.isFocused) {
+                                        coroutineScope.launch {
+                                            bringIntoViewRequester.bringIntoView()
+                                            viewModel.isKeyBoardOpen = mutableStateOf(value = true)
+                                        }
+
+                                    } else {
+                                        viewModel.isKeyBoardOpen = mutableStateOf(value = false)
+                                    }
+                                    viewModel.onEvent(
+                                        AuthEvent.ChangeFocusPasswordSignUp(
+                                            it
+                                        )
+                                    )
+                                },
+                                icon = icon,
+                                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
                             )
                         }
 
@@ -226,16 +313,38 @@ fun LoginItemShape(modifier: Modifier = Modifier, signUp: Boolean = true, colors
                         Spacer(modifier = Modifier.height(15.dp))
 
 
-                        viewModel.passwordConfirm.value.apply{
+                        viewModel.passwordConfirm.value.apply {
                             TransparentHintTextField(
                                 text = text,
                                 hint = hint + "*",
                                 isHintVisible = true,
                                 textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
-                                onValueChange = {viewModel.onEvent(AuthEvent.EnteredPasswordConfirmSignUp(it))},
+                                onValueChange = {
+                                    viewModel.onEvent(
+                                        AuthEvent.EnteredPasswordConfirmSignUp(
+                                            it
+                                        )
+                                    )
+                                },
                                 singleLine = true,
-                                onFocusChange = {viewModel.onEvent(AuthEvent.ChangeFocusPasswordConfirmSignUp(it))},
-                                icon = icon
+                                onFocusChange = {
+                                    if (it.isFocused) {
+                                        coroutineScope.launch {
+                                            bringIntoViewRequester.bringIntoView()
+                                            viewModel.isKeyBoardOpen = mutableStateOf(value = true)
+                                        }
+
+                                    } else {
+                                        viewModel.isKeyBoardOpen = mutableStateOf(value = false)
+                                    }
+                                    viewModel.onEvent(
+                                        AuthEvent.ChangeFocusPasswordConfirmSignUp(
+                                            it
+                                        )
+                                    )
+                                },
+                                icon = icon,
+                                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
                             )
                         }
 
@@ -246,41 +355,82 @@ fun LoginItemShape(modifier: Modifier = Modifier, signUp: Boolean = true, colors
                             .constrainAs(column) {
                                 start.linkTo(canvas.start)
                                 end.linkTo(canvas.end)
-                                top.linkTo(canvas.top, margin = 170.dp)
+                                top.linkTo(
+                                    title.bottom,
+                                    margin = if (viewModel.isKeyBoardOpen.value) 30.dp else 60.dp
+                                )
                             }) {
 
-                        viewModel.signInInfo.value.apply{
+                        viewModel.signInInfo.value.apply {
                             TransparentHintTextField(
                                 text = text,
                                 hint = hint + "*",
                                 isHintVisible = true,
                                 textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
-                                onValueChange = {viewModel.onEvent(AuthEvent.EnteredValueSignIn(it))},
+                                onValueChange = { viewModel.onEvent(AuthEvent.EnteredValueSignIn(it)) },
                                 singleLine = true,
-                                onFocusChange = {viewModel.onEvent(AuthEvent.ChangeFocusValueSignIn(it))},
-                                icon = icon
+                                onFocusChange = {
+                                    if (it.isFocused) {
+                                        coroutineScope.launch {
+                                            bringIntoViewRequester.bringIntoView()
+                                            viewModel.isKeyBoardOpen = mutableStateOf(value = true)
+                                        }
+
+                                    } else {
+                                        viewModel.isKeyBoardOpen = mutableStateOf(value = false)
+                                    }
+                                    viewModel.onEvent(
+                                        AuthEvent.ChangeFocusValueSignIn(
+                                            it
+                                        )
+                                    )
+                                },
+                                icon = icon,
+                                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
                             )
                         }
 
                         Spacer(modifier = Modifier.height(35.dp))
 
 
-                        viewModel.passwordSignIn.value.apply{
+                        viewModel.passwordSignIn.value.apply {
                             TransparentHintTextField(
                                 text = text,
                                 hint = hint + "*",
                                 isHintVisible = true,
                                 textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
-                                onValueChange = {viewModel.onEvent(AuthEvent.EnteredPasswordSignIn(it))},
+                                onValueChange = {
+                                    viewModel.onEvent(
+                                        AuthEvent.EnteredPasswordSignIn(
+                                            it
+                                        )
+                                    )
+                                },
                                 singleLine = true,
-                                onFocusChange = {viewModel.onEvent(AuthEvent.ChangeFocusPasswordSignIn(it))},
-                                icon = icon
+                                onFocusChange = {
+                                    if (it.isFocused) {
+                                        coroutineScope.launch {
+                                            bringIntoViewRequester.bringIntoView()
+                                            viewModel.isKeyBoardOpen = mutableStateOf(value = true)
+                                        }
+
+                                    } else {
+                                        viewModel.isKeyBoardOpen = mutableStateOf(value = false)
+                                    }
+
+                                    viewModel.onEvent(AuthEvent.ChangeFocusPasswordSignIn(it))
+                                },
+                                icon = icon,
+                                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
                             )
                         }
 
                         Spacer(modifier = Modifier.height(25.dp))
 
-                        TextButton(onClick = {viewModel.onEvent(AuthEvent.ForgetPassword)} , modifier = Modifier.padding(horizontal = 30.dp)) {
+                        TextButton(
+                            onClick = { viewModel.onEvent(AuthEvent.ForgetPassword) },
+                            modifier = Modifier.padding(horizontal = 30.dp)
+                        ) {
                             Text(
                                 stringResource(R.string.forget_password),
                                 style = TextStyle(fontWeight = FontWeight.Bold),
@@ -291,17 +441,18 @@ fun LoginItemShape(modifier: Modifier = Modifier, signUp: Boolean = true, colors
 
                     }
                 }
-                SignSubmitButton(modifier = Modifier.width(width =180.dp).constrainAs(submit){
-                    top.linkTo(canvas.bottom , margin = -10.dp)
-                    start.linkTo(column.start , margin = 0.dp)
-                    end.linkTo(column.end , margin = 0.dp)
-                },onClick = {
+                SignSubmitButton(modifier = Modifier.width(width = 180.dp).constrainAs(submit) {
+                    top.linkTo(canvas.bottom, margin = -10.dp)
+                    start.linkTo(column.start, margin = 0.dp)
+                    end.linkTo(column.end, margin = 0.dp)
+                }.bringIntoViewRequester(bringIntoViewRequester), onClick = {
                     if (viewModel.isSignIn.value.isSelected) {
                         viewModel.onEvent(AuthEvent.SignIn)
                     } else viewModel.onEvent(AuthEvent.SignUp)
                 },
-                    text = if(viewModel.isSignUp.value.isSelected) stringResource(R.string.signup)
-                    else stringResource(R.string.signin))
+                    text = if (viewModel.isSignUp.value.isSelected) stringResource(R.string.signup)
+                    else stringResource(R.string.signin)
+                )
             }
 
 
@@ -310,16 +461,16 @@ fun LoginItemShape(modifier: Modifier = Modifier, signUp: Boolean = true, colors
 }
 
 
-@Preview
-@Composable
-fun LoginItemShapePreview() {
-
-    BookAndroidTheme {
+//@Preview
+//@Composable
+//fun LoginItemShapePreview() {
+//
+//    BookAndroidTheme {
 //        LoginItemShape(
 //            colors = listOf(
 //                MaterialTheme.colors.primaryVariant,
 //                MaterialTheme.colors.secondaryVariant
 //            ), signUp = false
 //        )
-    }
-}
+//    }
+//}

@@ -12,6 +12,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.example.bookandroid.authfeature.domain.usecase.AuthUseCases
 
 import com.example.bookandroid.authfeature.front.signuporin.LoginScreen
@@ -26,18 +29,26 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             BookAndroidTheme {
+
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    LoginScreen()
-                }
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colors.background
+                    ) {
+                        LoginScreen()
+                    }
+
+            }
+
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) {
+                view , insets ->
+                val bottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+                view.updatePadding(bottom = bottom)
+                insets
             }
         }
     }
 }
-
 
 
 @Preview(showBackground = true)

@@ -19,4 +19,6 @@ interface AuthRepository {
 
     suspend fun forgetPasswordPhoneNumber(phoneNumber : String) : Any?
 
+    suspend fun isUsernameAvailable(username : String) : Boolean?
+
 }

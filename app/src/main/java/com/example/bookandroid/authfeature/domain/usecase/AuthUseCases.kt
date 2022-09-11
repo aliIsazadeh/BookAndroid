@@ -5,6 +5,7 @@ import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.ForgetP
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInEmail
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInPhoneNumber
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInUsername
+import com.example.bookandroid.authfeature.domain.usecase.signupusecase.IsUsernameAvailable
 import com.example.bookandroid.authfeature.domain.usecase.signupusecase.SignUpEmail
 import com.example.bookandroid.authfeature.domain.usecase.signupusecase.SignUpPhoneNumber
 import dagger.Provides
@@ -18,6 +19,7 @@ data class AuthUseCases @Inject constructor(
     val signUpEmail: SignUpEmail,
     val signUpPhoneNumber: SignUpPhoneNumber,
     val forgetPasswordEmail: ForgetPasswordEmail,
-    val forgetPasswordPhoneNumber: ForgetPasswordPhoneNumber
+    val forgetPasswordPhoneNumber: ForgetPasswordPhoneNumber,
+    val isUsernameAvailable: IsUsernameAvailable
 
 )

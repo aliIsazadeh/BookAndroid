@@ -3,15 +3,17 @@ package com.example.bookandroid.authfeature.front.signuporin
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material.icons.filled.VpnKey
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.ViewModel
@@ -19,24 +21,41 @@ import androidx.lifecycle.viewModelScope
 import com.example.bookandroid.BookApp
 import com.example.bookandroid.R
 import com.example.bookandroid.authfeature.common.Constants
+import com.example.bookandroid.authfeature.common.Resource
 import com.example.bookandroid.authfeature.domain.model.InvalidUserException
 import com.example.bookandroid.authfeature.domain.model.SignUser
 import com.example.bookandroid.authfeature.domain.usecase.AuthUseCases
+import com.example.bookandroid.authfeature.domain.usecase.signupusecase.IsUsernameAvailable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(ExperimentalFoundationApi::class)
 @HiltViewModel
 class SignViewModel @Inject constructor(
     private val authUseCases: AuthUseCases,
-    @SuppressLint("StaticFieldLeak") @ApplicationContext private val application : Context
+    @SuppressLint("StaticFieldLeak") @ApplicationContext private val application: Context
 ) : ViewModel() {
 
 
+    private val _isKeyBoardOpen: State<Boolean> = mutableStateOf(
+        value = false
+    )
 
+    var isKeyBoardOpen: State<Boolean> = _isKeyBoardOpen
+
+
+    private val _isUserNameValid = mutableStateOf(
+        UsernameValidTextState(
+            text = application.getString(R.string.username_valid),
+            isVisible = false
+        )
+    )
+    val isUserNameValid: State<UsernameValidTextState> = _isUserNameValid
 
     private val _isSignIn = mutableStateOf(
         SignModeButtonState(
@@ -44,7 +63,7 @@ class SignViewModel @Inject constructor(
             isSelected = true,
         )
     )
-    val isSignIn : State<SignModeButtonState> = _isSignIn
+    val isSignIn: State<SignModeButtonState> = _isSignIn
 
     private val _isSignUp = mutableStateOf(
         SignModeButtonState(
@@ -52,8 +71,7 @@ class SignViewModel @Inject constructor(
             isSelected = false
         )
     )
-    val isSignUp : State<SignModeButtonState> = _isSignUp
-
+    val isSignUp: State<SignModeButtonState> = _isSignUp
 
 
     private val _state = mutableStateOf(AuthState())
@@ -88,11 +106,10 @@ class SignViewModel @Inject constructor(
     private val _signUpUsername = mutableStateOf(
         TextFieldState(
             hint = application.getString(R.string.username),
-            icon =Icons.Default.VerifiedUser
+            icon = Icons.Default.VerifiedUser
         )
     )
     val signUpUsername: State<TextFieldState> = _signUpUsername
-
 
 
     private val _passwordConfirm = mutableStateOf(
@@ -107,19 +124,10 @@ class SignViewModel @Inject constructor(
     private val _passwordSignUp = mutableStateOf(
         TextFieldState(
             hint = application.getString(R.string.password),
-            icon = Icons.Default.VpnKey
+            icon = Icons.Filled.VpnKey
         )
     )
     val passwordSignUp: State<TextFieldState> = _passwordSignUp
-
-
-
-
-
-
-
-
-
 
 
     private val _eventFlow = MutableSharedFlow<AuthEvent>()
@@ -136,13 +144,13 @@ class SignViewModel @Inject constructor(
 
             }
 
-            is AuthEvent.IsSignIn ->{
+            is AuthEvent.IsSignIn -> {
                 _isSignIn.value = isSignIn.value.copy(isSelected = true)
                 _isSignUp.value = isSignUp.value.copy(isSelected = false)
             }
 
 
-            is AuthEvent.IsSignUp ->{
+            is AuthEvent.IsSignUp -> {
                 _isSignIn.value = isSignIn.value.copy(isSelected = false)
                 _isSignUp.value = isSignUp.value.copy(isSelected = true)
             }
@@ -165,6 +173,20 @@ class SignViewModel @Inject constructor(
                 _signUpUsername.value = signUpUsername.value.copy(
                     text = event.value
                 )
+                if (!isUserName(_signUpUsername.value.text)) {
+                    _isUserNameValid.value = isUserNameValid.value.copy(isVisible = true )
+                }else{
+                    _isUserNameValid.value = isUserNameValid.value.copy(isVisible = false )
+                }
+                viewModelScope.launch {
+                    authUseCases.isUsernameAvailable(signUpUsername.value.text).onEach { result ->
+                        when (result) {
+                            is Resource.Success -> {
+                                _isUserNameValid.value = isUserNameValid.value.copy(isVisible = false )
+                            }
+                        }
+                    }
+                }
             }
 
             is AuthEvent.ChangeFocusValueSignIn -> {
@@ -187,7 +209,7 @@ class SignViewModel @Inject constructor(
                 )
             }
 
-            is AuthEvent.EnteredPasswordSignIn-> {
+            is AuthEvent.EnteredPasswordSignIn -> {
                 _passwordSignIn.value = passwordSignIn.value.copy(
                     text = event.value
                 )
@@ -200,7 +222,7 @@ class SignViewModel @Inject constructor(
                 )
             }
 
-            is AuthEvent.EnteredPasswordSignUp-> {
+            is AuthEvent.EnteredPasswordSignUp -> {
                 _passwordSignUp.value = passwordSignUp.value.copy(
                     text = event.value
                 )
@@ -213,7 +235,7 @@ class SignViewModel @Inject constructor(
                 )
             }
 
-            is AuthEvent.EnteredPasswordConfirmSignUp-> {
+            is AuthEvent.EnteredPasswordConfirmSignUp -> {
                 _passwordConfirm.value = passwordConfirm.value.copy(
                     text = event.value
                 )
@@ -347,8 +369,6 @@ class SignViewModel @Inject constructor(
             }
 
 
-
-
         }
 
     }
@@ -368,7 +388,7 @@ class SignViewModel @Inject constructor(
     }
 
     private fun isUserName(userName: String): Boolean {
-        return userName.matches(Regex(application.getString(R.string.username_regex)))
+        return userName.matches(Regex(application.getString(R.string.username_regex))) && userName.length > 4
     }
 
 

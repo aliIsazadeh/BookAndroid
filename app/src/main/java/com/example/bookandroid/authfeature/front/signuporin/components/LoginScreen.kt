@@ -7,8 +7,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ScrollableTabRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -35,6 +37,7 @@ fun LoginScreen(
 
 
 
+
     ConstraintLayout(modifier = Modifier.background(color = Color.White)) {
 
         Image(modifier = Modifier.fillMaxSize(),
@@ -48,21 +51,23 @@ fun LoginScreen(
 
         Box(modifier = Modifier.constrainAs(shape) {
             end.linkTo(parent.end, margin = 0.dp)
-            top.linkTo(parent.top, margin = 50.dp)
+            top.linkTo(parent.top, margin = 25.dp)
             bottom.linkTo(parent.bottom)
 
 
         }) {
 
-            LoginItemShape(
-                modifier = Modifier,
-                colors = listOf(
-                    MaterialTheme.colors.primaryVariant,
-                    MaterialTheme.colors.secondaryVariant
-                ),
-                signUp = viewModel.isSignUp.value.isSelected,
-                viewModel = viewModel
-            )
+
+                LoginItemShape(
+                    modifier = Modifier,
+                    colors = listOf(
+                        MaterialTheme.colors.primaryVariant,
+                        MaterialTheme.colors.secondaryVariant
+                    ),
+                    signUp = viewModel.isSignUp.value.isSelected,
+                    viewModel = viewModel
+                )
+
 
         }
 

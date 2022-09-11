@@ -10,6 +10,7 @@ import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.ForgetP
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInEmail
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInPhoneNumber
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInUsername
+import com.example.bookandroid.authfeature.domain.usecase.signupusecase.IsUsernameAvailable
 import com.example.bookandroid.authfeature.domain.usecase.signupusecase.SignUpEmail
 import com.example.bookandroid.authfeature.domain.usecase.signupusecase.SignUpPhoneNumber
 import dagger.Module
@@ -56,7 +57,9 @@ object AppModule {
             signUpPhoneNumber = SignUpPhoneNumber(repository),
 
             forgetPasswordEmail = ForgetPasswordEmail(repository),
-            forgetPasswordPhoneNumber = ForgetPasswordPhoneNumber(repository)
+            forgetPasswordPhoneNumber = ForgetPasswordPhoneNumber(repository),
+
+            isUsernameAvailable = IsUsernameAvailable(repository)
 
         )
     }

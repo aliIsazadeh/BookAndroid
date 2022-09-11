@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BookAndroid</string>
+
+    <string name="sign_in_info_hint">ایمیل،شماره تلفن،نام کاربری</string>
+    <string name="sign_up_info_hint">شماره تلفن،نام کاربری</string>
+    <string name="username">نام کاربری</string>
+    <string name="confirm_password">تایید رمز</string>
+    <string name="username_regex">[0-9] + [a-z] + [A-Z] + _ + @</string>
+    <string name="phone_number_regex">[0-9]+</string>
+    <string name="signup">ثبت نام</string>
+    <string name="signin">ورود</string>
+    <string name="password">رمز</string>
+    <string name="email">ایمیل</string>
+    <string name="forget_password">فراموشی رمز؟</string>
+    <string name="username_valid">نام کاربری نامعتبر!</string>
+    <string name="code">کد</string>
+
+
+</resources>
