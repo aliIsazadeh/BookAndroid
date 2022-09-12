@@ -21,4 +21,8 @@ interface AuthRepository {
 
     suspend fun isUsernameAvailable(username : String) : Boolean?
 
+    suspend fun otpCodeEmail(email :String) : Any?
+
+    suspend fun otpCodePhoneNumber(phoneNumber: String): Any?
+
 }

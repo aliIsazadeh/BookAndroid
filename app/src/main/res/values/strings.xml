@@ -19,7 +19,9 @@
     <string name="email">Email</string>
     <string name="forget_password">Forget password?</string>
     <string name="username_valid">The username is not valid!</string>
-    <string name="code">code</string>
+    <string name="code">Code</string>
+    <string name="send_code">Send code</string>
+    <string name="done">Done</string>
 
 
 </resources>

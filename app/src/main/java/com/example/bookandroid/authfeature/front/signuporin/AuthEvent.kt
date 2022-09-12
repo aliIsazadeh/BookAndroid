@@ -10,6 +10,8 @@ sealed class AuthEvent {
     object IsSignIn : AuthEvent()
     object IsSignUp : AuthEvent()
     object ForgetPassword : AuthEvent()
+    object SendCode : AuthEvent()
+    object ForgetDone : AuthEvent()
 
     data class EnteredValueSignIn(val value: String) : AuthEvent()
     data class EnteredPasswordSignIn(val value: String) : AuthEvent()
@@ -28,6 +30,14 @@ sealed class AuthEvent {
     data class ChangeFocusValueSignUp(val focusState: FocusState) : AuthEvent()
     data class ChangeFocusPasswordSignUp(val focusState: FocusState) : AuthEvent()
     data class ChangeFocusPasswordConfirmSignUp(val focusState: FocusState) : AuthEvent()
+
+
+
+    data class EnteredForgetPassValue(val value: String ):AuthEvent()
+    data class EnteredForgetPassCode(val value: String): AuthEvent()
+
+    data class ChangeFocusForgetPassValue(val focusState: FocusState) : AuthEvent()
+    data class ChangeFocusForgetPassCode(val focusState: FocusState) : AuthEvent()
 
 
 

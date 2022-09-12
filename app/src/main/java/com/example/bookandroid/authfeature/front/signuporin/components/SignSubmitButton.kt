@@ -13,6 +13,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,11 +23,11 @@ import androidx.compose.ui.unit.dp
 import com.example.bookandroid.authfeature.front.theme.BookAndroidTheme
 
 @Composable
-fun SignSubmitButton(modifier: Modifier,text : String , onClick : () -> Unit) {
+fun SignSubmitButton(modifier: Modifier,text : String , onClick : () -> Unit , shape: Shape = RoundedCornerShape(150.dp)) {
 
     Column(modifier = modifier){
         Button(
-            onClick = onClick, shape = RoundedCornerShape(150.dp), modifier = modifier,
+            onClick = onClick, shape = shape, modifier = modifier,
             colors = ButtonDefaults.buttonColors(backgroundColor = if (isSystemInDarkTheme()) Color.Black else Color.White)
         ) {
             Text(

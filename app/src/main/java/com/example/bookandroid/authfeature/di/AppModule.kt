@@ -7,6 +7,8 @@ import com.example.bookandroid.authfeature.domain.repository.AuthRepository
 import com.example.bookandroid.authfeature.domain.usecase.AuthUseCases
 import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.ForgetPasswordEmail
 import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.ForgetPasswordPhoneNumber
+import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.OtpEmail
+import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.OtpPhoneNumber
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInEmail
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInPhoneNumber
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInUsername
@@ -59,7 +61,10 @@ object AppModule {
             forgetPasswordEmail = ForgetPasswordEmail(repository),
             forgetPasswordPhoneNumber = ForgetPasswordPhoneNumber(repository),
 
-            isUsernameAvailable = IsUsernameAvailable(repository)
+            isUsernameAvailable = IsUsernameAvailable(repository),
+
+            otpEmail = OtpEmail(repository),
+            otpPhoneNumber = OtpPhoneNumber(repository)
 
         )
     }

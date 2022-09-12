@@ -42,5 +42,13 @@ class AuthRepositoryImpl @Inject constructor(
 
     }
 
+    override suspend fun otpCodeEmail(email: String): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun otpCodePhoneNumber(phoneNumber: String): Any? {
+        TODO("Not yet implemented")
+    }
+
 
 }

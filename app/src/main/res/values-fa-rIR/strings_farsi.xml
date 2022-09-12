@@ -15,7 +15,10 @@
     <string name="email">ایمیل</string>
     <string name="forget_password">فراموشی رمز؟</string>
     <string name="username_valid">نام کاربری نامعتبر!</string>
-    <string name="code">کد</string>
+    <string name="code">کد</string>پ
+    <string name="send_code">ارسال کد</string>
+    <string name="done">ثبت</string>
+
 
 
 </resources>

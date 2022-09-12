@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.example.bookandroid.authfeature.domain.usecase.AuthUseCases
+import com.example.bookandroid.authfeature.front.forgetpassword.ForgetScreen
 
 import com.example.bookandroid.authfeature.front.signuporin.LoginScreen
 import com.example.bookandroid.authfeature.front.signuporin.SignViewModel
@@ -35,7 +36,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colors.background
                     ) {
-                        LoginScreen()
+                        ForgetScreen()
                     }
 
             }

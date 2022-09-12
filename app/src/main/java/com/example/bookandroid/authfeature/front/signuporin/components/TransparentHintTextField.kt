@@ -35,10 +35,11 @@ fun TransparentHintTextField(
     singleLine: Boolean = false,
     onFocusChange: (FocusState) -> Unit,
     icon: ImageVector,
-    keyboardActions: KeyboardActions? = null
+    keyboardActions: KeyboardActions? = null,
+    padding : PaddingValues = PaddingValues(horizontal = 30.dp)
 ) {
     Column(
-        modifier = Modifier.padding(horizontal = 30.dp)
+        modifier = Modifier.padding(padding)
     ) {
 
 
@@ -72,7 +73,7 @@ fun TransparentHintTextField(
                         onFocusChange(it)
                     },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                keyboardActions = keyboardActions!!
+//                keyboardActions = keyboardActions!!
             )
         }
 
