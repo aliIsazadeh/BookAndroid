@@ -23,15 +23,18 @@ import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.runtime.*
+import androidx.navigation.NavController
 import com.example.bookandroid.R
 import com.example.bookandroid.authfeature.front.signuporin.AuthEvent
 import com.example.bookandroid.authfeature.front.signuporin.SignViewModel
+import com.example.bookandroid.authfeature.front.util.Screen
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LoginItemShape(
+    navController: NavController,
     modifier: Modifier = Modifier,
     signUp: Boolean = true,
     colors: List<Color>,
@@ -428,7 +431,10 @@ fun LoginItemShape(
                         Spacer(modifier = Modifier.height(25.dp))
 
                         TextButton(
-                            onClick = { viewModel.onEvent(AuthEvent.ForgetPassword) },
+                            onClick = {
+                                viewModel.onEvent(AuthEvent.ForgetPassword)
+                                navController.navigate(Screen.ForgetPassScreen.route)
+                            },
                             modifier = Modifier.padding(horizontal = 30.dp)
                         ) {
                             Text(

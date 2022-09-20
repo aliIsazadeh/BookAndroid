@@ -15,14 +15,16 @@ interface AuthRepository {
 
     suspend fun signUpEmail(user : SignUser): Any?
 
-    suspend fun forgetPasswordEmail(email : String) : Any?
+    suspend fun forgetPasswordEmail(email : String, password: String) : Any?
 
-    suspend fun forgetPasswordPhoneNumber(phoneNumber : String) : Any?
+    suspend fun forgetPasswordPhoneNumber(phoneNumber : String , password: String) : Any?
 
     suspend fun isUsernameAvailable(username : String) : Boolean?
 
     suspend fun otpCodeEmail(email :String) : Any?
 
     suspend fun otpCodePhoneNumber(phoneNumber: String): Any?
+
+
 
 }

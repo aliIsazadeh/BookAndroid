@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.bookandroid.authfeature.front.signuporin.components.LoginItemShape
 import com.example.bookandroid.authfeature.front.signuporin.components.SignButton
 import com.example.bookandroid.authfeature.front.signuporin.components.SignSubmitButton
@@ -29,7 +30,7 @@ import com.example.bookandroid.R
 @ExperimentalAnimationApi
 @Composable
 fun LoginScreen(
-
+    navController: NavController,
     viewModel: SignViewModel = hiltViewModel()
 ) {
 
@@ -59,6 +60,7 @@ fun LoginScreen(
 
 
                 LoginItemShape(
+                    navController = navController,
                     modifier = Modifier,
                     colors = listOf(
                         MaterialTheme.colors.primaryVariant,
@@ -97,13 +99,13 @@ fun LoginScreen(
 }
 
 
-@OptIn(ExperimentalAnimationApi::class)
-@Preview
-@Composable
-fun LoginScreenShape() {
-
-    BookAndroidTheme(darkTheme = true) {
-        LoginScreen()
-
-    }
-}
+//@OptIn(ExperimentalAnimationApi::class)
+//@Preview
+//@Composable
+//fun LoginScreenShape() {
+//
+//    BookAndroidTheme(darkTheme = true) {
+//        LoginScreen()
+//
+//    }
+//}

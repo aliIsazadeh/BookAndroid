@@ -46,27 +46,7 @@ class SignViewModel @Inject constructor(
     var isKeyBoardOpen: State<Boolean> = _isKeyBoardOpen
 
 
-    private val _forgetPassInfo = mutableStateOf(
-        TextFieldState(
-            hint = application.getString(R.string.sign_up_info_hint),
-            icon = Icons.Default.Person
-        )
-    )
-    val forgetPassInfo: State<TextFieldState> = _forgetPassInfo
 
-
-    private val _forgetPassCode = mutableStateOf(
-        TextFieldState(
-            hint = application.getString(R.string.code),
-            icon = Icons.Default.Code
-        )
-    )
-    val forgetPassCode: State<TextFieldState> = _forgetPassCode
-
-    private val _forgetDoneButton = mutableStateOf(
-        SignSubmitState(text = application.getString(R.string.code))
-    )
-    val forgetDoneButton : State<SignSubmitState> = _forgetDoneButton
 
 
 
@@ -180,41 +160,7 @@ class SignViewModel @Inject constructor(
                 _isSignUp.value = isSignUp.value.copy(isSelected = true)
             }
 
-            is AuthEvent.SendCode -> {
-                if (isEmail(_forgetPassInfo.value.text)){
-                    authUseCases.otpEmail.invoke(_forgetPassInfo.value.text)
-                }else if(isPhoneNumber(_forgetPassInfo.value.text)) {
-                    authUseCases.otpPhoneNumber.invoke(_forgetPassInfo.value.text)
-                }
-            }
 
-
-            is AuthEvent.EnteredForgetPassValue -> {
-                _forgetPassInfo.value = forgetPassInfo.value.copy(
-                    text = event.value
-                )
-            }
-
-            is AuthEvent.ChangeFocusForgetPassValue -> {
-                _forgetPassInfo.value = forgetPassInfo.value.copy(
-                    isHintVisible = !event.focusState.isFocused &&
-                            forgetPassInfo.value.text.isBlank()
-                )
-            }
-
-
-            is AuthEvent.EnteredForgetPassCode -> {
-                _forgetPassCode.value = forgetPassCode.value.copy(
-                    text = event.value
-                )
-            }
-
-            is AuthEvent.ChangeFocusForgetPassCode -> {
-                _forgetPassCode.value = forgetPassCode.value.copy(
-                    isHintVisible = !event.focusState.isFocused &&
-                            forgetPassCode.value.text.isBlank()
-                )
-            }
 
 
             is AuthEvent.EnteredPasswordConfirmSignUp -> {
@@ -326,27 +272,27 @@ class SignViewModel @Inject constructor(
 
             is AuthEvent.SignIn -> {
                 if (isEmail(email = signInInfo.value.text)) {
-                    viewModelScope.launch {
-                        try {
-                            authUseCases.signInEmail(
-                                user = SignUser(
-                                    email = signInInfo.value.text,
-                                    passwordAuthentication = passwordSignIn.value.text,
-                                    phoneNumber = "",
-                                    username = ""
-                                )
-                            )
-                            _eventFlow.emit(
-                                AuthEvent.SignIn
-                            )
-                        } catch (e: InvalidUserException) {
-                            _eventFlow.emit(
-                                AuthEvent.ShowSnackBar(
-                                    message = e.message ?: "Sign in un successful"
-                                )
-                            )
-                        }
-                    }
+//                    viewModelScope.launch {
+//                        try {
+//                            authUseCases.signInEmail(
+//                                user = SignUser(
+//                                    email = signInInfo.value.text,
+//                                    passwordAuthentication = passwordSignIn.value.text,
+//                                    phoneNumber = "",
+//                                    username = ""
+//                                )
+//                            )
+//                            _eventFlow.emit(
+//                                AuthEvent.SignIn
+//                            )
+//                        } catch (e: InvalidUserException) {
+//                            _eventFlow.emit(
+//                                AuthEvent.ShowSnackBar(
+//                                    message = e.message ?: "Sign in un successful"
+//                                )
+//                            )
+//                        }
+//                    }
                 } else if (isPhoneNumber(phoneNumber = signInInfo.value.text) && passwordSignIn.value.text != null) {
                     viewModelScope.launch {
                         try {

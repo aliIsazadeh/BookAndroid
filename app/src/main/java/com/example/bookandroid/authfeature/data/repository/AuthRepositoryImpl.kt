@@ -29,12 +29,12 @@ class AuthRepositoryImpl @Inject constructor(
         return api.signUpWithEmail(email = user.email, password = user.passwordAuthentication )
     }
 
-    override suspend fun forgetPasswordEmail(email: String): Any? {
-        return api.forgetPasswordEmail(email = email)
+    override suspend fun forgetPasswordEmail(email: String , password: String): Any? {
+        return api.forgetPasswordEmail(email = email , password = password)
     }
 
-    override suspend fun forgetPasswordPhoneNumber(phoneNumber: String): Any? {
-        return api.forgetPasswordPhoneNumber(phoneNumber = phoneNumber)
+    override suspend fun forgetPasswordPhoneNumber(phoneNumber: String , password: String): Any? {
+        return api.forgetPasswordPhoneNumber(phoneNumber = phoneNumber , password = password)
     }
 
     override suspend fun isUsernameAvailable(username: String) : Boolean? {
@@ -43,12 +43,14 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun otpCodeEmail(email: String): Any? {
-        TODO("Not yet implemented")
+        return api.otpEmail(email= email)
     }
 
     override suspend fun otpCodePhoneNumber(phoneNumber: String): Any? {
-        TODO("Not yet implemented")
+        return api.otpPhoneNumber(phoneNumber = phoneNumber)
     }
+
+
 
 
 }

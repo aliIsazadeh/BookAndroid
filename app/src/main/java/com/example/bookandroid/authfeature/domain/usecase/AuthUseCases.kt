@@ -1,7 +1,7 @@
 package com.example.bookandroid.authfeature.domain.usecase
 
-import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.ForgetPasswordEmail
-import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.ForgetPasswordPhoneNumber
+import com.example.bookandroid.authfeature.domain.usecase.newpassword.ForgetPasswordEmail
+import com.example.bookandroid.authfeature.domain.usecase.newpassword.ForgetPasswordPhoneNumber
 import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.OtpEmail
 import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.OtpPhoneNumber
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInEmail
@@ -10,12 +10,11 @@ import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInUs
 import com.example.bookandroid.authfeature.domain.usecase.signupusecase.IsUsernameAvailable
 import com.example.bookandroid.authfeature.domain.usecase.signupusecase.SignUpEmail
 import com.example.bookandroid.authfeature.domain.usecase.signupusecase.SignUpPhoneNumber
-import dagger.Provides
 import javax.inject.Inject
 
 
 data class AuthUseCases @Inject constructor(
-    val signInEmail: SignInEmail,
+//    val signInEmail: SignInEmail,
     val signInUsername: SignInUsername,
     val signInPhoneNumber: SignInPhoneNumber,
     val signUpEmail: SignUpEmail,
@@ -23,7 +22,7 @@ data class AuthUseCases @Inject constructor(
     val forgetPasswordEmail: ForgetPasswordEmail,
     val forgetPasswordPhoneNumber: ForgetPasswordPhoneNumber,
     val isUsernameAvailable: IsUsernameAvailable,
-    val otpEmail : OtpEmail,
-    val otpPhoneNumber : OtpPhoneNumber
+//    val otpEmail : OtpEmail,
+//    val otpPhoneNumber : OtpPhoneNumber
 
 )

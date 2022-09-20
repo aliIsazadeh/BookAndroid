@@ -2,6 +2,7 @@ package com.example.bookandroid.authfeature.domain.usecase.signinusecase
 
 import com.example.bookandroid.authfeature.common.Resource
 import com.example.bookandroid.authfeature.domain.model.SignUser
+import com.example.bookandroid.authfeature.domain.repository.AuthKtorRepository
 import com.example.bookandroid.authfeature.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -10,7 +11,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class SignInEmail @Inject constructor(
-    private val repository: AuthRepository
+    private val repository: AuthKtorRepository
 ) {
 
     operator fun invoke(user: SignUser) : Flow<Resource<Any>> = channelFlow {

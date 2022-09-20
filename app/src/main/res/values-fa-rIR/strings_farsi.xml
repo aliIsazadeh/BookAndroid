@@ -18,6 +18,8 @@
     <string name="code">کد</string>پ
     <string name="send_code">ارسال کد</string>
     <string name="done">ثبت</string>
+    <string name="new_password">رمز جدید</string>
+    <string name="confirm_new_password">تایید رمز جدید</string>
 
 
 

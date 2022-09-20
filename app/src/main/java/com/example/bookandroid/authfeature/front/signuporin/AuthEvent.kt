@@ -1,17 +1,21 @@
 package com.example.bookandroid.authfeature.front.signuporin
 
 import androidx.compose.ui.focus.FocusState
+import androidx.navigation.NavController
 import com.example.bookandroid.authfeature.domain.model.SignUser
 
 sealed class AuthEvent {
+
     data class ShowSnackBar(val message : String) : AuthEvent()
+
     object SignIn : AuthEvent()
     object SignUp : AuthEvent()
     object IsSignIn : AuthEvent()
     object IsSignUp : AuthEvent()
     object ForgetPassword : AuthEvent()
     object SendCode : AuthEvent()
-    object ForgetDone : AuthEvent()
+    class ForgetDone(val navController: NavController) : AuthEvent()
+    object NewPasswordDone : AuthEvent()
 
     data class EnteredValueSignIn(val value: String) : AuthEvent()
     data class EnteredPasswordSignIn(val value: String) : AuthEvent()
@@ -38,6 +42,13 @@ sealed class AuthEvent {
 
     data class ChangeFocusForgetPassValue(val focusState: FocusState) : AuthEvent()
     data class ChangeFocusForgetPassCode(val focusState: FocusState) : AuthEvent()
+
+
+    data class EnteredNewPassword(val value: String ):AuthEvent()
+    data class EnteredNewPasswordConfirm(val value: String): AuthEvent()
+
+    data class ChangeFocusNewPassword(val focusState: FocusState) : AuthEvent()
+    data class ChangeFocusNewPasswordConfirm(val focusState: FocusState) : AuthEvent()
 
 
 

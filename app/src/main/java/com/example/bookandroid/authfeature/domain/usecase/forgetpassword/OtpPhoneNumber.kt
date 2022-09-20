@@ -1,6 +1,7 @@
 package com.example.bookandroid.authfeature.domain.usecase.forgetpassword
 
 import com.example.bookandroid.authfeature.common.Resource
+import com.example.bookandroid.authfeature.domain.repository.AuthKtorRepository
 import com.example.bookandroid.authfeature.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -9,13 +10,13 @@ import java.io.IOException
 import javax.inject.Inject
 
 class OtpPhoneNumber @Inject constructor(
-    private val repository: AuthRepository
+    private val repository: AuthKtorRepository
 ){
 
     operator fun invoke(phoneNumber :String) : Flow<Resource<Any>> = channelFlow {
         try {
             send(Resource.Loading<Any>())
-            val response = repository.otpCodePhoneNumber(phoneNumber)
+            val response = repository.getOtp(phoneNumber)
             send(Resource.Success<Any>(response as Any))
         }catch (e : HttpException){
             send(Resource.Error<Any>(e.localizedMessage ?: "An unexpected error occurred"))

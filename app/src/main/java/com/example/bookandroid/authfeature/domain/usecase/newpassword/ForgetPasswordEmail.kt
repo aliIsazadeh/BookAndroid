@@ -1,4 +1,4 @@
-package com.example.bookandroid.authfeature.domain.usecase.forgetpassword
+package com.example.bookandroid.authfeature.domain.usecase.newpassword
 
 import com.example.bookandroid.authfeature.common.Resource
 import com.example.bookandroid.authfeature.domain.repository.AuthRepository
@@ -8,16 +8,14 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class ForgetPasswordPhoneNumber @Inject constructor(
+class ForgetPasswordEmail @Inject constructor(
     private val repository: AuthRepository
-) {
+){
 
-
-
-    operator fun invoke(phoneNumber :String) : Flow<Resource<Any>> = channelFlow {
+    operator fun invoke(email :String , password : String) : Flow<Resource<Any>> = channelFlow {
         try {
             send(Resource.Loading<Any>())
-            val response = repository.forgetPasswordPhoneNumber(phoneNumber)
+            val response = repository.forgetPasswordEmail(email ,password )
             send(Resource.Success<Any>(response as Any))
         }catch (e : HttpException){
             send(Resource.Error<Any>(e.localizedMessage ?: "An unexpected error occurred"))
@@ -25,4 +23,5 @@ class ForgetPasswordPhoneNumber @Inject constructor(
             send(Resource.Error<Any>("Couldn't reach server. Check your internet Connection"))
         }
     }
+
 }

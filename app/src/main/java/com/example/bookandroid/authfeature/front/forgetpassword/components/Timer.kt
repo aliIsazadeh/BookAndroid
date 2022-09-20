@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.sp
 import com.example.bookandroid.R
+import com.example.bookandroid.authfeature.front.forgetpassword.ForgetPasswordViewModel
 import com.example.bookandroid.authfeature.front.signuporin.AuthEvent
 import com.example.bookandroid.authfeature.front.signuporin.SignViewModel
 import kotlinx.coroutines.delay
@@ -40,7 +41,7 @@ import kotlin.math.sin
 @Composable
 fun Timer(
 
-    viewModel: SignViewModel,
+    viewModel: ForgetPasswordViewModel,
 
     // total time of the timer
     totalTime: Long,

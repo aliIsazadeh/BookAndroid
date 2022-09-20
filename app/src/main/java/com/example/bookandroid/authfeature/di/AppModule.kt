@@ -3,10 +3,12 @@ package com.example.bookandroid.authfeature.di
 import com.example.bookandroid.authfeature.common.Constants
 import com.example.bookandroid.authfeature.data.AuthApi
 import com.example.bookandroid.authfeature.data.repository.AuthRepositoryImpl
+import com.example.bookandroid.authfeature.domain.repository.AuthKtorRepository
 import com.example.bookandroid.authfeature.domain.repository.AuthRepository
+import com.example.bookandroid.authfeature.domain.usecase.AuthKtorUseCases
 import com.example.bookandroid.authfeature.domain.usecase.AuthUseCases
-import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.ForgetPasswordEmail
-import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.ForgetPasswordPhoneNumber
+import com.example.bookandroid.authfeature.domain.usecase.newpassword.ForgetPasswordEmail
+import com.example.bookandroid.authfeature.domain.usecase.newpassword.ForgetPasswordPhoneNumber
 import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.OtpEmail
 import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.OtpPhoneNumber
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInEmail
@@ -18,11 +20,9 @@ import com.example.bookandroid.authfeature.domain.usecase.signupusecase.SignUpPh
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import javax.inject.Singleton
 
 
@@ -51,7 +51,7 @@ object AppModule {
     @Singleton
     fun provideAuthUseCases(repository: AuthRepository) : AuthUseCases{
         return AuthUseCases(
-            signInEmail = SignInEmail(repository),
+//            signInEmail = SignInEmail(repository),
             signInPhoneNumber = SignInPhoneNumber(repository),
             signInUsername = SignInUsername(repository),
 
@@ -63,8 +63,31 @@ object AppModule {
 
             isUsernameAvailable = IsUsernameAvailable(repository),
 
-            otpEmail = OtpEmail(repository),
-            otpPhoneNumber = OtpPhoneNumber(repository)
+//            otpEmail = OtpEmail(repository),
+//            otpPhoneNumber = OtpPhoneNumber(repository)
+
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthKtorUseCases(repository: AuthKtorRepository) : AuthKtorUseCases {
+        return AuthKtorUseCases(
+            signInEmail = SignInEmail(repository),
+//            signInPhoneNumber = SignInPhoneNumber(repository),
+//            signInUsername = SignInUsername(repository),
+//
+//            signUpEmail = SignUpEmail(repository),
+//            signUpPhoneNumber = SignUpPhoneNumber(repository),
+//
+//            forgetPasswordEmail = ForgetPasswordEmail(repository),
+//            forgetPasswordPhoneNumber = ForgetPasswordPhoneNumber(repository),
+//
+//            isUsernameAvailable = IsUsernameAvailable(repository),
+
+//            otpEmail = OtpEmail(repository),
+            otpPhoneNumber = OtpPhoneNumber(repository),
+//            OtpEmail =
 
         )
     }

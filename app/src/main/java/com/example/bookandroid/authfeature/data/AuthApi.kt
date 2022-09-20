@@ -29,7 +29,7 @@ interface AuthApi {
     suspend fun signUpWithEmail(
         @Path(value = "email") email: String,
         @Path(value = "password") password: String
-    ): Any?
+    ) : Any?
 
     @POST("")
     suspend fun signUpWithPhoneNumber(
@@ -38,10 +38,16 @@ interface AuthApi {
     ): Any?
 
     @POST("")
-    fun forgetPasswordEmail(@Path(value = "email") email: String): Any?
+    fun forgetPasswordEmail(
+        @Path(value = "email") email: String,
+        @Path(value = "password") password: String
+    ): Any?
 
     @POST("")
-    fun forgetPasswordPhoneNumber(@Path(value = "phoneNumber") phoneNumber: String): Any?
+    fun forgetPasswordPhoneNumber(
+        @Path(value = "phoneNumber") phoneNumber: String,
+        @Path(value = "password") password: String
+    ): Any?
 
     @GET("")
     fun isUsernameAvailable(@Path(value = "username") userName: String): Boolean?
