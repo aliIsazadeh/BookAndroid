@@ -83,6 +83,7 @@ class NewPasswordViewModel @Inject constructor(
             is AuthEvent.NewPasswordDone -> {
 
             }
+            else -> {}
         }
 
     }

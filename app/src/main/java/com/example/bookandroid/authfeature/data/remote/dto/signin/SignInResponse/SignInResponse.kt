@@ -1,4 +1,4 @@
-package com.example.bookandroid.authfeature.data.remote.dto.SignInResponse
+package com.example.bookandroid.authfeature.data.remote.dto.signin.SignInResponse
 
 import com.example.bookandroid.authfeature.data.remote.dto.User
 import kotlinx.serialization.Serializable

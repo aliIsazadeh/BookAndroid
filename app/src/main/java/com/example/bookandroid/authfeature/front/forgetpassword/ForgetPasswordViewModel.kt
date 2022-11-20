@@ -2,6 +2,7 @@ package com.example.bookandroid.authfeature.front.forgetpassword
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Code
@@ -9,6 +10,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.bookandroid.R
 import com.example.bookandroid.authfeature.common.Constants
 import com.example.bookandroid.authfeature.domain.usecase.AuthKtorUseCases
@@ -20,6 +22,7 @@ import com.example.bookandroid.authfeature.front.signuporin.TextFieldState
 import com.example.bookandroid.authfeature.front.util.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -64,10 +67,18 @@ class ForgetPasswordViewModel @Inject constructor(
 
         when(event){
             is AuthEvent.SendCode -> {
-                if (isEmail(_forgetPassInfo.value.text)){
+                viewModelScope.launch{
+                    try{
+                        if (isEmail(_forgetPassInfo.value.text)) {
 //                    authKtorUseCases.otpEmail.invoke(_forgetPassInfo.value.text)
-                }else if(isPhoneNumber(_forgetPassInfo.value.text)) {
-                    authKtorUseCases.otpPhoneNumber.invoke(_forgetPassInfo.value.text)
+                        } else if (isPhoneNumber(_forgetPassInfo.value.text)) {
+                            println("it is running in view Model")
+//                            authKtorUseCases.otpPhoneNumber.invoke(_forgetPassInfo.value.text)
+                        } else
+                            println("it is not a number")
+                    }catch (e:Exception){
+                        Log.d("OTP",e.message.toString())
+                    }
                 }
             }
 
@@ -102,6 +113,8 @@ class ForgetPasswordViewModel @Inject constructor(
                 event.navController.navigate(Screen.NewPasswordScreen.route + "")
             }
 
+
+            else -> {}
         }
     }
 

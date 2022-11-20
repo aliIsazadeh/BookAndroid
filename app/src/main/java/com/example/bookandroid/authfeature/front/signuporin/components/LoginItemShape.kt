@@ -276,7 +276,6 @@ fun LoginItemShape(
 
                         Spacer(modifier = Modifier.height(15.dp))
 
-
                         viewModel.passwordSignUp.value.apply {
                             TransparentHintTextField(
                                 text = text,

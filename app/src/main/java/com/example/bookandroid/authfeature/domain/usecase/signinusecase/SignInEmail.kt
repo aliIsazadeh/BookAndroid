@@ -1,6 +1,8 @@
 package com.example.bookandroid.authfeature.domain.usecase.signinusecase
 
 import com.example.bookandroid.authfeature.common.Resource
+import com.example.bookandroid.authfeature.data.remote.dto.signin.signinrequests.SignInParams
+import com.example.bookandroid.authfeature.data.remote.dto.signin.signinrequests.SignInRequestEmail
 import com.example.bookandroid.authfeature.domain.model.SignUser
 import com.example.bookandroid.authfeature.domain.repository.AuthKtorRepository
 import com.example.bookandroid.authfeature.domain.repository.AuthRepository
@@ -14,11 +16,11 @@ class SignInEmail @Inject constructor(
     private val repository: AuthKtorRepository
 ) {
 
-    operator fun invoke(user: SignUser) : Flow<Resource<Any>> = channelFlow {
+    operator fun invoke(params: SignInRequestEmail) : Flow<Resource<Any>> = channelFlow {
 
         try {
             send(Resource.Loading<Any>())
-            val response = repository.signInEmail(user)
+            val response = repository.signInEmail(params)
             send(Resource.Success<Any>(response as Any))
         }catch (e : HttpException){
             send(Resource.Error<Any>(e.localizedMessage ?: "An unexpected error occurred"))

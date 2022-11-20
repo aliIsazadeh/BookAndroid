@@ -9,14 +9,13 @@ import com.example.bookandroid.authfeature.domain.usecase.AuthKtorUseCases
 import com.example.bookandroid.authfeature.domain.usecase.AuthUseCases
 import com.example.bookandroid.authfeature.domain.usecase.newpassword.ForgetPasswordEmail
 import com.example.bookandroid.authfeature.domain.usecase.newpassword.ForgetPasswordPhoneNumber
-import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.OtpEmail
-import com.example.bookandroid.authfeature.domain.usecase.forgetpassword.OtpPhoneNumber
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInEmail
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInPhoneNumber
 import com.example.bookandroid.authfeature.domain.usecase.signinusecase.SignInUsername
 import com.example.bookandroid.authfeature.domain.usecase.signupusecase.IsUsernameAvailable
 import com.example.bookandroid.authfeature.domain.usecase.signupusecase.SignUpEmail
 import com.example.bookandroid.authfeature.domain.usecase.signupusecase.SignUpPhoneNumber
+import com.example.bookandroid.authfeature.domain.usecase.testUsecase.TestApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -55,7 +54,7 @@ object AppModule {
             signInPhoneNumber = SignInPhoneNumber(repository),
             signInUsername = SignInUsername(repository),
 
-            signUpEmail = SignUpEmail(repository),
+//            signUpEmail = SignUpEmail(repository),
             signUpPhoneNumber = SignUpPhoneNumber(repository),
 
             forgetPasswordEmail = ForgetPasswordEmail(repository),
@@ -86,7 +85,8 @@ object AppModule {
 //            isUsernameAvailable = IsUsernameAvailable(repository),
 
 //            otpEmail = OtpEmail(repository),
-            otpPhoneNumber = OtpPhoneNumber(repository),
+            signUpEmail = SignUpEmail(repository),
+            testService = TestApi(repository)
 //            OtpEmail =
 
         )

@@ -19,14 +19,17 @@ import com.example.bookandroid.BookApp
 import com.example.bookandroid.R
 import com.example.bookandroid.authfeature.common.Constants
 import com.example.bookandroid.authfeature.common.Resource
+import com.example.bookandroid.authfeature.data.remote.dto.signup.SignUpParams
 import com.example.bookandroid.authfeature.domain.model.InvalidUserException
 import com.example.bookandroid.authfeature.domain.model.SignUser
+import com.example.bookandroid.authfeature.domain.usecase.AuthKtorUseCases
 import com.example.bookandroid.authfeature.domain.usecase.AuthUseCases
 import com.example.bookandroid.authfeature.domain.usecase.signupusecase.IsUsernameAvailable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,7 +37,7 @@ import javax.inject.Inject
 @OptIn(ExperimentalFoundationApi::class)
 @HiltViewModel
 class SignViewModel @Inject constructor(
-    private val authUseCases: AuthUseCases,
+    private val authUseCases: AuthKtorUseCases,
     @SuppressLint("StaticFieldLeak") @ApplicationContext private val application: Context
 ) : ViewModel() {
 
@@ -200,13 +203,13 @@ class SignViewModel @Inject constructor(
                     _isUserNameValid.value = isUserNameValid.value.copy(isVisible = false )
                 }
                 viewModelScope.launch {
-                    authUseCases.isUsernameAvailable(signUpUsername.value.text).onEach { result ->
-                        when (result) {
-                            is Resource.Success -> {
-                                _isUserNameValid.value = isUserNameValid.value.copy(isVisible = false )
-                            }
-                        }
-                    }
+//                    authUseCases.isUsernameAvailable(signUpUsername.value.text).onEach { result ->
+//                        when (result) {
+//                            is Resource.Success -> {
+//                                _isUserNameValid.value = isUserNameValid.value.copy(isVisible = false )
+//                            }
+//                        }
+//                    }
                 }
             }
 
@@ -271,17 +274,57 @@ class SignViewModel @Inject constructor(
 
 
             is AuthEvent.SignIn -> {
-                if (isEmail(email = signInInfo.value.text)) {
+                viewModelScope.launch {
+//                    val request = SignUpParams(
+//                        email = signUpInfo.value.text,
+//                        password = passwordSignUp.value.text,
+//                        phoneNumber = "",
+//                        username = _signUpUsername.value.text
+//                    )
+
+                    authUseCases.testService.invoke(/*params = request*/).collect{
+                        when(it){
+                            is Resource.Success -> print("fuuuuuuuuuuuuuuuuuuck")
+                            is Resource.Error -> print("fuuuuuuuuuuuuuuuuuuck")
+
+                            else -> {}
+                        }
+                    }
+                }
+//                if (isEmail(email = signInInfo.value.text)) {
+////                    viewModelScope.launch {
+////                        try {
+////                            authUseCases.signInEmail(
+////                                user = SignUser(
+////                                    email = signInInfo.value.text,
+////                                    passwordAuthentication = passwordSignIn.value.text,
+////                                    phoneNumber = "",
+////                                    username = ""
+////                                )
+////                            )
+////                            _eventFlow.emit(
+////                                AuthEvent.SignIn
+////                            )
+////                        } catch (e: InvalidUserException) {
+////                            _eventFlow.emit(
+////                                AuthEvent.ShowSnackBar(
+////                                    message = e.message ?: "Sign in un successful"
+////                                )
+////                            )
+////                        }
+////                    }
+//                }
+//                else if (isPhoneNumber(phoneNumber = signInInfo.value.text) && passwordSignIn.value.text != null) {
 //                    viewModelScope.launch {
 //                        try {
-//                            authUseCases.signInEmail(
-//                                user = SignUser(
-//                                    email = signInInfo.value.text,
-//                                    passwordAuthentication = passwordSignIn.value.text,
-//                                    phoneNumber = "",
-//                                    username = ""
-//                                )
-//                            )
+////                            authUseCases.signInPhoneNumber(
+////                                user = SignUser(
+////                                    email = "",
+////                                    passwordAuthentication = "",
+////                                    phoneNumber = signInInfo.value.text,
+////                                    username = ""
+////                                )
+////                            )
 //                            _eventFlow.emit(
 //                                AuthEvent.SignIn
 //                            )
@@ -293,88 +336,62 @@ class SignViewModel @Inject constructor(
 //                            )
 //                        }
 //                    }
-                } else if (isPhoneNumber(phoneNumber = signInInfo.value.text) && passwordSignIn.value.text != null) {
-                    viewModelScope.launch {
-                        try {
-                            authUseCases.signInPhoneNumber(
-                                user = SignUser(
-                                    email = "",
-                                    passwordAuthentication = "",
-                                    phoneNumber = signInInfo.value.text,
-                                    username = ""
-                                )
-                            )
-                            _eventFlow.emit(
-                                AuthEvent.SignIn
-                            )
-                        } catch (e: InvalidUserException) {
-                            _eventFlow.emit(
-                                AuthEvent.ShowSnackBar(
-                                    message = e.message ?: "Sign in un successful"
-                                )
-                            )
-                        }
-                    }
-                } else if (isPhoneNumber(phoneNumber = signInInfo.value.text) && passwordSignIn.value.text != null) {
-                    viewModelScope.launch {
-                        try {
-                            authUseCases.signInPhoneNumber(
-                                user = SignUser(
-                                    email = "",
-                                    passwordAuthentication = "",
-                                    phoneNumber = signInInfo.value.text,
-                                    username = ""
-                                )
-                            )
-                            _eventFlow.emit(
-                                AuthEvent.SignIn
-                            )
-                        } catch (e: InvalidUserException) {
-                            _eventFlow.emit(
-                                AuthEvent.ShowSnackBar(
-                                    message = e.message ?: "Sign in un successful"
-                                )
-                            )
-                        }
-                    }
-                }
+//                } else if (isPhoneNumber(phoneNumber = signInInfo.value.text) && passwordSignIn.value.text != null) {
+//                    viewModelScope.launch {
+//                        try {
+////                            authUseCases.signInPhoneNumber(
+////                                user = SignUser(
+////                                    email = "",
+////                                    passwordAuthentication = "",
+////                                    phoneNumber = signInInfo.value.text,
+////                                    username = ""
+////                                )
+////                            )
+//                            _eventFlow.emit(
+//                                AuthEvent.SignIn
+//                            )
+//                        } catch (e: InvalidUserException) {
+//                            _eventFlow.emit(
+//                                AuthEvent.ShowSnackBar(
+//                                    message = e.message ?: "Sign in un successful"
+//                                )
+//                            )
+//                        }
+//                    }
+//                }
             }
 
 
             is AuthEvent.SignUp -> {
                 if (isEmail(email = signInInfo.value.text) && passwordSignUp.value.text != null && (passwordSignUp.value.text == passwordConfirm.value.text)) {
                     viewModelScope.launch {
-                        try {
-                            authUseCases.signUpEmail(
-                                user = SignUser(
-                                    email = signInInfo.value.text,
-                                    passwordAuthentication = passwordSignUp.value.text,
-                                    phoneNumber = "",
-                                    username = ""
-                                )
-                            )
-                            _eventFlow.emit(
-                                AuthEvent.SignUp
-                            )
-                        } catch (e: InvalidUserException) {
-                            _eventFlow.emit(
-                                AuthEvent.ShowSnackBar(
-                                    message = e.message ?: "Sign up un successful"
-                                )
-                            )
+                        val request = SignUpParams(
+                            email = signUpInfo.value.text,
+                            password = passwordSignUp.value.text,
+                            phoneNumber = "",
+                            username = _signUpUsername.value.text
+                        )
+
+                        authUseCases.signUpEmail.invoke(params = request).collect{
+                            when(it){
+                                is Resource.Success -> print("fuuuuuuuuuuuuuuuuuuck")
+                                is Resource.Error -> print("fuuuuuuuuuuuuuuuuuuck")
+
+                                else -> {}
+                            }
                         }
                     }
                 } else if (isPhoneNumber(phoneNumber = signInInfo.value.text) && passwordSignUp.value.text != null && (passwordSignUp.value.text == passwordConfirm.value.text)) {
                     viewModelScope.launch {
                         try {
-                            authUseCases.signUpPhoneNumber(
-                                user = SignUser(
-                                    email = "",
-                                    passwordAuthentication = "",
-                                    phoneNumber = signUpInfo.value.text,
-                                    username = ""
-                                )
-                            )
+//                            authUseCases.signUpPhoneNumber(
+//                                user = SignUser(
+//                                    email = "",
+//                                    passwordAuthentication = "",
+//                                    phoneNumber = signUpInfo.value.text,
+//                                    username = ""
+//                                )
+//                            )
                             _eventFlow.emit(
                                 AuthEvent.SignUp
                             )
@@ -388,8 +405,7 @@ class SignViewModel @Inject constructor(
                     }
                 }
             }
-
-
+            else -> {}
         }
 
     }
@@ -405,7 +421,7 @@ class SignViewModel @Inject constructor(
     }
 
     private fun isEmail(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        return true;
     }
 
     private fun isUserName(userName: String): Boolean {
